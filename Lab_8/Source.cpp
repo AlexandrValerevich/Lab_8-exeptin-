@@ -13,10 +13,48 @@
 #include <math.h>
 #include <vector>
 #include <locale.h>
+#include <exception>
+#include <string>
 
 using namespace std;
 
-void main() {
+class SqrtException : public exception
+{
+public:
+	SqrtException() : exception() {
+		countOfException++;
+	};
+	string massage() const  {
+		return "---------> Минус под корнем\n";
+	}
+	static int countOfException;
+
+};
+
+class MassIndexException: public exception
+{
+public:
+	MassIndexException() : exception() {
+		countOfException++;
+	};
+	~MassIndexException();
+
+	static int countOfException;
+
+};
+
+int SqrtException     ::countOfException = 0;
+int MassIndexException::countOfException = 0;
+
+
+template<typename T>
+void PrintArr(vector<T> Mass) {
+	for (auto it : Mass) {
+		cout << *it << endl;
+	}
+}
+
+int main() {
 	
 	setlocale(0, "");
 
@@ -29,19 +67,39 @@ void main() {
 	{
 		try
 		{
+			if (1 - pow(i, 2) < 0) {
+				throw SqrtException();
+			}
 			A.push_back(sqrt(1 - pow(i, 2)));
 		}
-		catch (const exception& ex)
+		catch (const SqrtException& ex)
 		{
-			const char* m = ex.what();
-			while (m++) {
-				cout << *m;
-			}
+			cout << ex.massage();
+			A.push_back(0);
 		}
 			
 	}
-	
 
-	return;
+	int numOfItemInB;
+	int numOfItemInC;
+	cout << "Введите количество элементов в массиве B";
+	cin >> numOfItemInB;
+	if (numOfItemInB < 0) { numOfItemInB = abs(numOfItemInB); }
+
+	for (size_t i = 0; i < numOfItemInB; i++)
+	{
+		B.push_back(rand()%200 - 100);
+	}
+
+	cout << "Введите количество элементов в массиве C";
+	cin >> numOfItemInC;
+	if (numOfItemInC < 0) { numOfItemInC = abs(numOfItemInC); }
+
+	for (size_t i = 0; i < numOfItemInC; i++)
+	{
+		if(i >= A.size() || i >= B.size())
+	}
+
+	return 0;
 }
 
