@@ -37,25 +37,42 @@ public:
 	MassIndexException() : exception() {
 		countOfException++;
 	};
-	~MassIndexException();
+	string massage() const {
+		return "---------> Выход за пределы массива\n";
+	}
 
 	static int countOfException;
 
 };
 
+class LogException : public exception
+{
+public:
+	LogException() : exception() {
+		countOfException++;
+	};
+	string massage() const {
+		return "---------> Отрицательное или нулевое значение логарифма\n";
+	}
+
+	static int countOfException;
+};
+
+
+
 int SqrtException     ::countOfException = 0;
+int LogException      ::countOfException = 0;
 int MassIndexException::countOfException = 0;
 
 
 template<typename T>
 void PrintArr(vector<T> Mass) {
-	for (auto it : Mass) {
+	for (auto it = Mass.begin(); it != Mass.end(); ++it) {
 		cout << *it << endl;
 	}
 }
 
 int main() {
-	
 	setlocale(0, "");
 
 	/*Создаем три динамических массива*/
@@ -82,23 +99,50 @@ int main() {
 
 	int numOfItemInB;
 	int numOfItemInC;
-	cout << "Введите количество элементов в массиве B";
+	cout << "Введите количество элементов в массиве B ";
 	cin >> numOfItemInB;
 	if (numOfItemInB < 0) { numOfItemInB = abs(numOfItemInB); }
 
-	for (size_t i = 0; i < numOfItemInB; i++)
+	for (int i = 0; i < numOfItemInB; i++)
 	{
 		B.push_back(rand()%200 - 100);
 	}
 
-	cout << "Введите количество элементов в массиве C";
+	cout << "Введите количество элементов в массиве C ";
 	cin >> numOfItemInC;
 	if (numOfItemInC < 0) { numOfItemInC = abs(numOfItemInC); }
 
-	for (size_t i = 0; i < numOfItemInC; i++)
+
+	for (int i = 0; i < numOfItemInC; i++)
 	{
-		if(i >= A.size() || i >= B.size())
+		try
+		{
+			if (i >= (int)A.size() || i >= (int)B.size()) throw MassIndexException();
+			if (B.at(i) >= A.at(i))                       throw LogException();
+
+			C.push_back(log10(A.at(i) - B.at(i)));
+		}
+		catch (const MassIndexException& ex)
+		{
+			cout << ex.massage();
+			C.push_back(0);
+		}
+		catch (const LogException& ex)
+		{
+			cout << ex.massage();
+			C.push_back(0);
+		}
 	}
+	
+
+	cout << "============================================" << endl;
+	cout << "Массив A" << endl;
+	PrintArr(A);
+	cout << "Массив B" << endl;
+	PrintArr(B);
+	cout << "Массив C" << endl;
+	PrintArr(C);
+	cout << "============================================" << endl;
 
 	return 0;
 }
