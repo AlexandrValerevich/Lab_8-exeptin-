@@ -67,15 +67,16 @@ int MassIndexException::countOfException = 0;
 
 template<typename T>
 void PrintArr(vector<T> Mass) {
+	cout << "=======================================================" << endl;
 	for (auto it = Mass.begin(); it != Mass.end(); ++it) {
 		cout << *it << endl;
 	}
+	cout << "=======================================================" << endl;
 }
 
 int main() {
 	setlocale(0, "");
 
-	/*Создаем три динамических массива*/
 	vector<double> A;
 	vector<double> B;
 	vector<double> C;
@@ -135,14 +136,13 @@ int main() {
 	}
 	
 
-	cout << "============================================" << endl;
+	
 	cout << "Массив A" << endl;
 	PrintArr(A);
 	cout << "Массив B" << endl;
 	PrintArr(B);
 	cout << "Массив C" << endl;
 	PrintArr(C);
-	cout << "============================================" << endl;
 
 	return 0;
 }
